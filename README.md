@@ -1,3 +1,28 @@
+import logging
+from langchain.agents import initialize_agent, AgentType
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+from langchain.chains import LLMChain
+from langchain.agents import Tool, AgentExecutor
+from app.tools.product_tools import ProductUploadTool, ProductSearchTool
+from app.tools.order_tools import OrderPlacementTool
+from app.tools.calendar_tools import CreateMeetingTool, GetMeetingTool
+from app.tools.expense_tools import AddExpenseTool, ExpenseReportTool, ExpenseAnalysisTool
+
+# Logging setup
+logging.basicConfig(level=logging.INFO)
+
+# Initialize Langchain tools
+tools = [
+    ProductUploadTool(),
+    ProductSearchTool(),
+    OrderPlacementTool(),
+    CreateMeetingTool(),
+    GetMeetingTool(),
+    AddExpenseTool(),
+    ExpenseReportTool(),
+    ExpenseAnalysisTool()
+]
 
 # Initialize LLM model (Here we use OpenAI, but you can replace it with llama3 or others as needed)
 llm = OpenAI(model="llama3-groq-70b-8192-tool-use-preview")
@@ -37,7 +62,6 @@ agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 # Function to get the agent executor instance
 async def get_agent_executor():
     return agent_executor
-
 
 
 Example Request:
